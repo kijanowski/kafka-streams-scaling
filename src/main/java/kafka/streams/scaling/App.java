@@ -25,7 +25,6 @@ public class App {
     config.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100);
     config.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
     config.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 10);
-    config.put(ConsumerConfig.METRICS_SAMPLE_WINDOW_MS_CONFIG, 10000);
 
     StreamsBuilder builder = new StreamsBuilder();
 
