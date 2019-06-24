@@ -1,6 +1,6 @@
 package kafka.streams.scaling;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -30,7 +30,11 @@ public class Sender {
 
     Producer<String, String> producer = new KafkaProducer<>(properties);
 
-    List<String> keys = Arrays.asList(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+    List<String> keys = new ArrayList<>();
+    for(int i = 0; i < 30; i++) {
+      keys.add(UUID.randomUUID().toString());
+    }
+
     LOG.info("Start");
     for (String key : keys) {
       for (int i = 0; i < 10000; i++) {
