@@ -10,7 +10,7 @@ $ ./bin/zookeeper-server-start etc/kafka/zookeeper.properties
 $ ./bin/kafka-server-start etc/kafka/server.properties
        
 $ ./bin/kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 3 --topic inScalingTopic
-$ ./bin/kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 3 --topic outScalingTopic
+$ ./bin/kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic outScalingTopic
 
 $ ./bin/kafka-console-producer --broker-list localhost:9092 --topic inScalingTopic --property parse.key=true --property key.separator=:
 >b4320f5d-4d16-4999-827d-190d7d44da45:SomeRandomMessage

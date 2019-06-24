@@ -26,7 +26,6 @@ public class App {
     );
     config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     config.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100);
-    config.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
     config.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 10);
 
     StreamsBuilder builder = new StreamsBuilder();
@@ -36,6 +35,9 @@ public class App {
       .peek((key, value) -> {
         try {
           Thread.sleep(10);
+          if(Long.valueOf(value.substring(3)) % 1000 == 0) {
+            log.info("Processed another 1000 messages");
+          }
         } catch (InterruptedException e) {
           log.error(e);
         }
