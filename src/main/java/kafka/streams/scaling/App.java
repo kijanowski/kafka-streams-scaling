@@ -1,5 +1,6 @@
 package kafka.streams.scaling;
 
+import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -20,7 +21,9 @@ public class App {
 
     Properties config = new Properties();
     config.put(StreamsConfig.APPLICATION_ID_CONFIG, "ks-scaling-app-app-id");
-    config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG,
+      Optional.ofNullable(System.getenv("BOOTSTRAP_SERVERS_CONFIG")).orElse("localhost:9092")
+    );
     config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     config.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100);
     config.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
