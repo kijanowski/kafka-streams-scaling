@@ -33,13 +33,15 @@ public class App {
     builder
       .stream("inScalingTopic", Consumed.with(Serdes.String(), Serdes.String()))
       .peek((key, value) -> {
-        try {
-          Thread.sleep(10);
-          if(Long.valueOf(value.substring(3)) % 1000 == 0) {
-            log.info("Processed another 1000 messages");
+        if(!DONE.equals(value)) {
+          try {
+            Thread.sleep(10);
+            if (Long.valueOf(value.substring(3)) % 1000 == 0) {
+              log.info("Processed another 1000 messages");
+            }
+          } catch (InterruptedException e) {
+            log.error(e);
           }
-        } catch (InterruptedException e) {
-          log.error(e);
         }
       })
       .filter((key, value) -> DONE.equals(value))
