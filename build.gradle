@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'com.bmuschko.docker-java-application' version '4.10.0'
 }
 
 repositories {
@@ -26,4 +27,22 @@ task fatJar(type: Jar) {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
     with jar
+}
+
+docker {
+    javaApplication {
+        if (System.getenv('GOOGLE_APPLICATION_CREDENTIALS')) {
+            registryCredentials {
+                url = 'https://eu.gcr.io'
+                username = '_json_key'
+                password = file(System.getenv('GOOGLE_APPLICATION_CREDENTIALS')).text
+            }
+        }
+        baseImage = 'openjdk:11-jdk'
+        maintainer = 'Grzegorz Kocur "grzegorz.kocur@softwaremill.com"'
+        tag = 'eu.gcr.io/kafka-streams-scaling/' + project.name.toLowerCase() + ':latest'
+        jvmArgs = [ "-Dcom.sun.management.jmxremote.port=5555",
+                    "-Dcom.sun.management.jmxremote.authenticate=false",
+                    "-Dcom.sun.management.jmxremote.ssl=false"]
+    }
 }
