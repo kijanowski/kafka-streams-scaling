@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-streams-scaling
+  labels:
+    app: kafka-streams-scaling
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: kafka-streams-scaling
+      labels:
+        app: kafka-streams-scaling
+    spec:
+      volumes:
+        - name: jmx-config
+          configMap:
+            name: kafka-streams-scaling-jmx-configmap
+      containers:
+        - name: kafka-streams-scaling
+          image: eu.gcr.io/kafka-streams-scaling/kafka-streams-scaling:latest
+          imagePullPolicy: Always
+          env:
+            - name: BOOTSTRAP_SERVERS_CONFIG
+              value: "my-kafka:9092"
+        - name: prometheus-jmx-exporter
+          volumeMounts:
+            - name: jmx-config
+              mountPath: /etc/jmx-exporter
+          image: solsson/kafka-prometheus-jmx-exporter:latest
+          command:
+            - java
+            - -jar
+            - jmx_prometheus_httpserver.jar
+            - "5556"
+            - /etc/jmx-exporter/jmx-prometheus.yml
+          ports:
+            - containerPort: 5556
+              name: metrics
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: kafka-streams-scaling
