@@ -13,9 +13,9 @@ $ ./bin/kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 
 $ ./bin/kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic outScalingTopic
 
 $ ./bin/kafka-console-producer --broker-list localhost:9092 --topic inScalingTopic --property parse.key=true --property key.separator=:
->b4320f5d-4d16-4999-827d-190d7d44da45:SomeRandomMessage
+>b4320f5d-4d16-4999-827d-190d7d44da45:val1
 >0336df45-c5f4-486d-8f15-871881b158ec:done
->9acec74a-cbfb-4bd5-90da-5f661b06f2b6:AnotherRandomMessage
+>9acec74a-cbfb-4bd5-90da-5f661b06f2b6:val2
 
 $ ./bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic outScalingTopic --from-beginning --property print.key=true
 
